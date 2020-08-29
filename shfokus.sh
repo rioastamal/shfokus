@@ -42,15 +42,15 @@ Example of ~/.shfokus (one website per line):
   facebook.com
   www.facebook.com
 
-Example 1 - Block distraction websites:
+Example 1 - Block distracting websites:
 
   $ sudo bash ./shfokus.sh -a block
 
-Example 2 - Block distraction websites in 30 minutes:
+Example 2 - Block distracting websites in 30 minutes:
 
   $ sudo bash ./shfokus.sh -a block -t 30
 
-Example 3 - Unblock distraction websites.
+Example 3 - Unblock distracting websites.
 
   $ sudo bash ./shfokus.sh -a unblock
 
