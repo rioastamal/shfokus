@@ -36,7 +36,7 @@ List of available ACTION:
   - block    -> block website
   - unblock  -> release block
 
-Example of ~/.shfokus (one website per line):
+Example of ~/.shfokus (one domain per line):
   youtube.com
   www.youtube.com
   facebook.com
@@ -57,7 +57,7 @@ Example 3 - Unblock distracting websites.
 -------------------------------- About shFokus --------------------------------
 
 shFokus is Bash script to make you focus and stay productive by blocking
-distracting websites suchs Facebook, Youtube etc.
+distracting websites such as Facebook, Youtube etc.
 
 shFokus is free software licensed under MIT. Visit the project homepage
 at https://github.com/rioastamal/shfokus."
@@ -171,6 +171,10 @@ www.facebook.com
 facebook.com
 www.instagram.com
 instagram.com
+twitter.com
+www.twitter.com
+twitch.com
+www.twitch.com
 EOF
     }
 
@@ -212,7 +216,7 @@ do
 
         \?)
             shfokus_see_help
-            exit 1
+            exit 400
         ;;
     esac
 done
@@ -231,7 +235,7 @@ case $FOKUS_ACTION in
     *)
         echo -e "Unrecognized action.\n" >&2
         shfokus_see_help
-        exit 1
+        exit 400
     ;;
 esac
 
