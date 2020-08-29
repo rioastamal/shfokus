@@ -71,7 +71,7 @@ shfokus_see_help()
 shfokus_ctrl_c()
 {
     echo -e "\n"
-    echo "----- Interupted by CTRL+C -----"
+    echo "----- Interrupted by CTRL+C -----"
     shfokus_unblock
     exit 0
 }
