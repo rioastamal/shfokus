@@ -3,6 +3,7 @@
 # @author Rio Astamal <rio@rioastamal.net>
 # @desc shFokus is Bash script to make you focus and stay productive by
 #       blocking distracting websites suchs Facebook, Youtube etc.
+# @url https://github.com/rioastamal/shfokus
 
 readonly FOKUS_SCRIPT_NAME=$(basename $0)
 
@@ -67,49 +68,86 @@ shfokus_see_help()
     echo "Try '$FOKUS_SCRIPT_NAME -h' for more information."
 }
 
+shfokus_ctrl_c()
+{
+    echo -e "\n"
+    echo "----- Interupted by CTRL+C -----"
+    shfokus_unblock
+    exit 0
+}
+
 shfokus_block_in_minutes()
 {
+    # Catch CTRL+C and call unblock function
+    trap shfokus_ctrl_c INT
+
     # convert minutes to seconds
-    local SECONDS_LEFT=$(( $FOKUS_MINUTES * 60 ))
+    local SECONDS_LEFT=$(( $FOKUS_MINUTES * 4 ))
 
     while (( $SECONDS_LEFT >= 0 ))
     do
-        echo -ne "\rBlock will be released in ${SECONDS_LEFT} sec..."
+        # clear line
+        echo -ne "\033[K"
+        echo -ne "\rBlock will be released in ${SECONDS_LEFT} sec... CTRL+C to unblock"
         sleep 1
         SECONDS_LEFT=$(( $SECONDS_LEFT - 1 ))
     done
+
+    shfokus_unblock
 }
 
-shfokus_block()
+shfokus_write_hosts_file()
 {
+    local MODE="block"
+    [[ ! -z "$1" ]] && MODE="$1"
+
     # Content to write to HOSTS file
     local FOKUS_CONTENT=
-    local OUTPUT_FILE=$HOSTS_FILE
+    # Used for dry-run mode
+    local DRY_RUN_FILE=$HOSTS_FILE
 
     read -r -d '' FOKUS_CONTENT << EOF
 # shfokus_begin - DO NOT TOUCH
-$( echo $( <$FOKUS_FILE ) )
+$( echo 0.0.0.0 $( <$FOKUS_FILE ) )
 # shfokus_end
 EOF
 
-    [[ "$FOKUS_DRY_RUN" == "yes" ]] && OUTPUT_FILE="/dev/stdout"
+    [[ "$FOKUS_DRY_RUN" == "yes" ]] && DRY_RUN_FILE="/dev/stdout"
 
-    [[ ! -w "$HOSTS_FILE" ]] && {
-        echo "Error: Can not write to HOSTS file $OUTPUT_FILE." >&2
-        echo "Make sure it is writeable and exists." >&2
+    [[ ! -w "$HOSTS_FILE" && "$FOKUS_DRY_RUN" != "yes" ]] && {
+        echo "Error: Can not write to HOSTS file $DRY_RUN_FILE." >&2
+        echo "Make sure it is writeable by running as root." >&2
         exit 403
     }
 
-    echo "$( <$HOSTS_FILE )" | \
-    sed "/^# shfokus_begin/,/^# shfokus_end/d" >> $OUTPUT_FILE
-    echo "${FOKUS_CONTENT}" >> $OUTPUT_FILE
+    # Output the content inside sub-shell because we are
+    # reading and writing the same file
+    echo "$(
+      echo "$( <$HOSTS_FILE )" | \
+      sed "/^# shfokus_begin/,/^# shfokus_end/d"
+    )" > $DRY_RUN_FILE
+
+    [[ "$MODE" == "unblock" ]] && {
+        echo ""
+        echo "Distracting websites has been unblocked -- Enjoy your day :)"
+        return 0
+    }
+
+    # Append our blocked site config at the end of Hosts file
+    echo "${FOKUS_CONTENT}" >> $DRY_RUN_FILE
+    echo "Stay focus and productive -- Have a great day :)"
 
     [[ "$FOKUS_MINUTES" != "0" ]] && shfokus_block_in_minutes
 }
 
+shfokus_block()
+{
+    shfokus_write_hosts_file "block"
+}
+
 shfokus_unblock()
 {
-    echo "RELEASE"
+    shfokus_write_hosts_file "unblock"
 }
 
 shfokus_init()
