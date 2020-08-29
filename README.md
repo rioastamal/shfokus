@@ -144,6 +144,11 @@ Block will be released in 3587 sec... CTRL+C to unblock
 
 Block will automatically released in 60 minutes. If you want to release earlier use CTRL+C.
 
+```
+----- Interrupted by CTRL+C -----
+Distracting websites has been unblocked -- Enjoy your day :)
+```
+
 ### Unblock Distracting Websites
 
 To release block of distracting websites use option `-a unblock`. It will remove values from your HOSTS file.
