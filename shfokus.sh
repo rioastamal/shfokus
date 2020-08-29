@@ -173,8 +173,10 @@ www.instagram.com
 instagram.com
 twitter.com
 www.twitter.com
-twitch.com
-www.twitch.com
+twitch.tv
+www.twitch.tv
+netflix.com
+www.netflix.com
 EOF
     }
 
