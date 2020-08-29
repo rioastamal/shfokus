@@ -82,7 +82,7 @@ shfokus_block_in_minutes()
     trap shfokus_ctrl_c INT
 
     # convert minutes to seconds
-    local SECONDS_LEFT=$(( $FOKUS_MINUTES * 4 ))
+    local SECONDS_LEFT=$(( $FOKUS_MINUTES * 60 ))
 
     while (( $SECONDS_LEFT >= 0 ))
     do
@@ -93,6 +93,7 @@ shfokus_block_in_minutes()
         SECONDS_LEFT=$(( $SECONDS_LEFT - 1 ))
     done
 
+    echo -e "\n"
     shfokus_unblock
 }
 
@@ -128,7 +129,6 @@ EOF
     )" > $DRY_RUN_FILE
 
     [[ "$MODE" == "unblock" ]] && {
-        echo ""
         echo "Distracting websites has been unblocked -- Enjoy your day :)"
         return 0
     }
