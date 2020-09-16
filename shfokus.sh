@@ -72,14 +72,20 @@ shfokus_ctrl_c()
 {
     echo -e "\n"
     echo "----- Interrupted by CTRL+C -----"
-    shfokus_unblock
+
+    # Reset FOKUS_MINUTES so it will not spawn another timer
+    FOKUS_MINUTES=0
+
+    # Execute the 1st arg as it act as a function name
+    $1
+
     exit 0
 }
 
 shfokus_block_in_minutes()
 {
     # Catch CTRL+C and call unblock function
-    trap shfokus_ctrl_c INT
+    trap 'shfokus_ctrl_c shfokus_unblock' INT
 
     # convert minutes to seconds
     local SECONDS_LEFT=$(( $FOKUS_MINUTES * 60 ))
@@ -94,7 +100,36 @@ shfokus_block_in_minutes()
     done
 
     echo -e "\n"
+
+    # Reset FOKUS_MINUTES so it will not spawn another timer
+    FOKUS_MINUTES=0
+
     shfokus_unblock
+}
+
+shfokus_unblock_in_minutes()
+{
+    # Catch CTRL+C and call block function
+    trap 'shfokus_ctrl_c shfokus_block' INT
+
+    # convert minutes to seconds
+    local SECONDS_LEFT=$(( $FOKUS_MINUTES * 60 ))
+
+    while (( $SECONDS_LEFT >= 0 ))
+    do
+        # clear line
+        echo -ne "\033[K"
+        echo -ne "\rWebsites will be blocked in ${SECONDS_LEFT} sec... CTRL+C to block"
+        sleep 1
+        SECONDS_LEFT=$(( $SECONDS_LEFT - 1 ))
+    done
+
+    echo -e "\n"
+
+    # Reset FOKUS_MINUTES so it will not spawn another timer
+    FOKUS_MINUTES=0
+
+    shfokus_block
 }
 
 shfokus_write_hosts_file()
@@ -130,6 +165,8 @@ EOF
 
     [[ "$MODE" == "unblock" ]] && {
         echo "Distracting websites has been unblocked -- Enjoy your day :)"
+
+        [[ "$FOKUS_MINUTES" != "0" ]] && shfokus_unblock_in_minutes
         return 0
     }
 
