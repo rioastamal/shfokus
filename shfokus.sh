@@ -7,12 +7,11 @@
 
 readonly FOKUS_SCRIPT_NAME=$(basename $0)
 
-FOKUS_VERSION="2020-08-29"
+FOKUS_VERSION="2020-09-17"
 FOKUS_DRY_RUN="no"
 FOKUS_MINUTES="0"
 
 [[ -z "$FOKUS_FILE" ]] && FOKUS_FILE="~/.shfokus"
-[[ -z "$MINUTES" ]] && MINUTES="0"
 [[ -z "$HOSTS_FILE" ]] && HOSTS_FILE="/etc/hosts"
 
 shfokus_help()
