@@ -164,6 +164,25 @@ $ sudo bash ./shfokus.sh -a unblock
 Distracting websites has been unblocked -- Enjoy your day :)
 ```
 
+### Unblock Distracting Websites for Specific Duration
+
+If you want unblock websites for specific duration then use `-t` option. Same as block it accept value in minutes.
+
+```
+$ sudo bash ./shfokus.sh -a unblock -t 10
+```
+
+```
+Websites will be blocked in ${SECONDS_LEFT} sec... CTRL+C to block
+```
+
+Websites will be unblocked temporarily for 10 minutes. If you want to block earlier use CTRL+C.
+
+```
+----- Interrupted by CTRL+C -----
+Stay focus and productive -- Have a great day :)
+```
+
 ## Author
 
 shFokus is written by Rio Astamal &lt;rio@rioastamal.net&gt;
