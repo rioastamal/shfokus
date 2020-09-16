@@ -32,7 +32,7 @@ $ bash ./shfokus.sh -h
 ```
 
 ```
-Usage: shfokus.sh [OPTIONS]
+Usage: ./shfokus.sh [OPTIONS]
 
 Where OPTIONS:
   -a ACTION     Specify action name using ACTION.
@@ -41,9 +41,9 @@ Where OPTIONS:
   -h            Print this help and exit.
   -r            Dry run mode. Print the content that will be written to hosts
                 file.
-  -t MINUTES    Specify how long in MINUTES sites should be blocked. Default
-                is '0' which means blocked forever. Make sure there is no other
-                shfokus instance running.
+  -t MINUTES    Specify how long in MINUTES sites should be blocked/unblocked.
+                Default is '0' which means blocked/unblocked forever. Make sure
+                there is no other shfokus instance running.
   -v            Display shFokus version.
 
 List of available ACTION:
@@ -68,6 +68,10 @@ Example 3 - Unblock distracting websites.
 
   $ sudo bash ./shfokus.sh -a unblock
 
+Example 4 - Unblock distracting websites in 10 minutes.
+
+  $ sudo bash ./shfokus.sh -a unblock -t 10
+
 -------------------------------- About shFokus --------------------------------
 
 shFokus is Bash script to make you focus and stay productive by blocking
@@ -75,7 +79,6 @@ distracting websites such as Facebook, Youtube etc.
 
 shFokus is free software licensed under MIT. Visit the project homepage
 at https://github.com/rioastamal/shfokus.
-
 ```
 
 ### Create List of Distracting Websites
