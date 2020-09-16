@@ -27,9 +27,9 @@ Where OPTIONS:
   -h            Print this help and exit.
   -r            Dry run mode. Print the content that will be written to hosts
                 file.
-  -t MINUTES    Specify how long in MINUTES sites should be blocked. Default
-                is '0' which means blocked forever. Make sure there is no other
-                shfokus instance running.
+  -t MINUTES    Specify how long in MINUTES sites should be blocked/unblocked.
+                Default is '0' which means blocked/unblocked forever. Make sure
+                there is no other shfokus instance running.
   -v            Display shFokus version.
 
 List of available ACTION:
@@ -53,6 +53,10 @@ Example 2 - Block distracting websites in 30 minutes:
 Example 3 - Unblock distracting websites.
 
   $ sudo bash ./shfokus.sh -a unblock
+
+Example 4 - Unblock distracting websites in 10 minutes.
+
+  $ sudo bash ./shfokus.sh -a unblock -t 10
 
 -------------------------------- About shFokus --------------------------------
 
